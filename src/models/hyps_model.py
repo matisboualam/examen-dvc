@@ -3,9 +3,11 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 import pickle
 
+src_path = '/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc/data/processed_data/'
+
 # Charger les données normalisées
-X_train_scaled = pd.read_csv('/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc/data/processed_data/X_train_scaled.csv')
-y_train = pd.read_csv('/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc/data/processed_data/y_train.csv')
+X_train = pd.read_csv(src_path+'X_train_scaled.csv')
+y_train = pd.read_csv(src_path+'y_train.csv')
 
 # Initialiser le modèle
 model = RandomForestRegressor()
@@ -22,7 +24,7 @@ param_grid = {
 grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, n_jobs=-1, verbose=2)
 
 # Effectuer la recherche en grille
-grid_search.fit(X_train_scaled, y_train.values.ravel())
+grid_search.fit(X_train, y_train.values.ravel())
 
 # Extraire les meilleurs paramètres
 best_params = grid_search.best_params_
