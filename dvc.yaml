@@ -1,0 +1,36 @@
+stages:
+  split:
+    cmd: python src/data/make_data.py
+    deps:
+    - data/raw_data
+    - src/data/make_data.py
+    outs:
+    - data/preprocessed_data
+  normalize:
+    cmd: python src/data/normalize_data.py
+    deps:
+    - data/preprocessed_data
+    - src/data/normalize_data.py
+    outs :
+    - data/processed_data
+  GridSearch:
+    cmd: python src/models/hyps_model.py
+    deps:
+    - data/processed_data
+    - src/models/hyps_model.py
+    outs:
+    - hyps/best_params.pkl
+  Train:
+    cmd: python src/models/train_model.py
+    deps:
+    - hyps/best_params.pkl
+    - src/models/train_model.py
+    outs:
+    - models/trained_model.pkl
+  Eval:
+    cmd: python src/models/eval.py
+    deps:
+    - models/trained_model.pkl
+    - src/models/eval.py
+    metrics:
+    - metrics/scores.json

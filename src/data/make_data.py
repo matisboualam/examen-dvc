@@ -1,8 +1,10 @@
 import pandas as pd
+import os
 from sklearn.model_selection import train_test_split
 
 src_path = '/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc/data/raw_data/'
-dst_path = '/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc/data/processed_data/'
+dst_path = '/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc/data/preprocessed_data'
+os.makedirs(dst_path, exist_ok=True)
 
 data = pd.read_csv(src_path+'raw.csv')
 
@@ -29,7 +31,7 @@ X_test['dayofweek'] = X_test['date'].dt.dayofweek
 X_train = X_train.drop(columns=['date'])
 X_test = X_test.drop(columns=['date'])
 
-X_train.to_csv(dst_path+'X_train.csv', index=False)
-X_test.to_csv(dst_path+'X_test.csv', index=False)
-y_train.to_csv(dst_path+'y_train.csv', index=False)
-y_test.to_csv(dst_path+'y_test.csv', index=False)
+X_train.to_csv(dst_path+'/X_train.csv', index=False)
+X_test.to_csv(dst_path+'/X_test.csv', index=False)
+y_train.to_csv(dst_path+'/y_train.csv', index=False)
+y_test.to_csv(dst_path+'/y_test.csv', index=False)

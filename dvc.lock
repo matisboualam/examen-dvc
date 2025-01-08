@@ -1,0 +1,87 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python src/data/make_data.py
+    deps:
+    - path: data/raw_data
+      hash: md5
+      md5: 41dee78430cbebe25be9986bbb599d4a.dir
+      size: 333757
+      nfiles: 1
+    - path: src/data/make_data.py
+      hash: md5
+      md5: d8f16ef8213d459aaf5158119f40f1b6
+      size: 1296
+    outs:
+    - path: data/preprocessed_data
+      hash: md5
+      md5: 5fb212a0beddd57cc53b584e2e4d7763.dir
+      size: 315818
+      nfiles: 4
+  normalize:
+    cmd: python src/data/normalize_data.py
+    deps:
+    - path: data/preprocessed_data
+      hash: md5
+      md5: 5fb212a0beddd57cc53b584e2e4d7763.dir
+      size: 315818
+      nfiles: 4
+    - path: src/data/normalize_data.py
+      hash: md5
+      md5: 74335273b77cc7e6ccf2164bdb243beb
+      size: 803
+    outs:
+    - path: data/processed_data
+      hash: md5
+      md5: e5a64e3cf8c996ea550aa4e0a34ef477.dir
+      size: 376019
+      nfiles: 3
+  GridSearch:
+    cmd: python src/models/hyps_model.py
+    deps:
+    - path: data/processed_data
+      hash: md5
+      md5: e5a64e3cf8c996ea550aa4e0a34ef477.dir
+      size: 376019
+      nfiles: 3
+    - path: src/models/hyps_model.py
+      hash: md5
+      md5: 468756e5145d29750600d9263b243a13
+      size: 1072
+    outs:
+    - path: hyps/best_params.pkl
+      hash: md5
+      md5: 2deaa008e7da543abc7bd72a4284d7bf
+      size: 69
+  Train:
+    cmd: python src/models/train_model.py
+    deps:
+    - path: hyps/best_params.pkl
+      hash: md5
+      md5: 2deaa008e7da543abc7bd72a4284d7bf
+      size: 69
+    - path: src/models/train_model.py
+      hash: md5
+      md5: ac5dedb7f5245888af7021558c3a6ec5
+      size: 862
+    outs:
+    - path: models/trained_model.pkl
+      hash: md5
+      md5: 237c8a7216a788b84750e85f25ca07f4
+      size: 25192793
+  Eval:
+    cmd: python src/models/eval.py
+    deps:
+    - path: models/trained_model.pkl
+      hash: md5
+      md5: 237c8a7216a788b84750e85f25ca07f4
+      size: 25192793
+    - path: src/models/eval.py
+      hash: md5
+      md5: d0d42ac8aa63b74bb55a99817de7d485
+      size: 1146
+    outs:
+    - path: metrics/scores.json
+      hash: md5
+      md5: 0cd22242a374f384df1d8e72312d4649
+      size: 73
