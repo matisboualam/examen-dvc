@@ -34,3 +34,5 @@ stages:
     - src/models/eval.py
     metrics:
     - metrics/scores.json
+    outs :
+    - metrics/predictions.csv
