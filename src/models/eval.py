@@ -17,7 +17,7 @@ with open('/home/matis/Documents/cours/modules/dvc_dagshub/evaluation/examen-dvc
 
 y_pred = model.predict(X_test)
 y_pred = pd.Series(y_pred, name='silica_concentrate')
-y_pred.to_csv(src_path_2+'predictions.csv', index=False)
+y_pred.to_csv(dst_path+'/predictions.csv', index=False)
 
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
